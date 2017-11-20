@@ -5,3 +5,5 @@ es
 lib
 node_modules
 reports
+
+.idea/*

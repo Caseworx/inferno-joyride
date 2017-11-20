@@ -1,5 +1,4 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import Inferno from 'inferno';
 import App from './src/App';
 
 export function renderApp(RootComponent) {
@@ -7,7 +6,7 @@ export function renderApp(RootComponent) {
 
   /* istanbul ignore if */
   if (target) {
-    ReactDOM.render(
+    Inferno.render(
       <RootComponent />,
       target
     );

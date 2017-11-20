@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import Inferno from 'inferno';
+import Component from 'inferno-component'
 import { hexToRGB } from './utils';
 
 let isTouch = false;
@@ -9,20 +9,7 @@ if (typeof window !== 'undefined') {
   isTouch = 'ontouchstart' in window || navigator.msMaxTouchPoints;
 }
 
-export default class JoyrideBeacon extends React.Component {
-  static propTypes = {
-    eventType: PropTypes.string.isRequired,
-    onTrigger: PropTypes.func.isRequired,
-    step: PropTypes.object.isRequired,
-    xPos: PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.string
-    ]).isRequired,
-    yPos: PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.string
-    ]).isRequired
-  };
+export default class JoyrideBeacon extends Component {
 
   static defaultProps = {
     xPos: -1000,

@@ -1,10 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import Inferno from 'inferno';
+import Component from 'inferno-component';
 import Joyride from '../../src/scripts';
 
 import './styles.scss';
 
-export default class Demo extends React.Component {
+export default class Demo extends Component {
   constructor(props) {
     super(props);
 
@@ -17,6 +17,11 @@ export default class Demo extends React.Component {
           textAlign: 'center',
           selector: '.projects .list',
           position: 'top'
+        },
+         {
+          title: 'Unmounted target',
+          text: 'This step tests what happens when a target is missing',
+          selector: '.not-mounted',
         },
         {
           title: 'Our Mission',
@@ -33,11 +38,7 @@ export default class Demo extends React.Component {
             }
           }
         },
-        {
-          title: 'Unmounted target',
-          text: 'This step tests what happens when a target is missing',
-          selector: '.not-mounted',
-        },
+
         {
           title: 'About Us',
           text: 'We are the people',
@@ -67,18 +68,7 @@ export default class Demo extends React.Component {
       step: 0,
     };
 
-    this.handleClickStart = this.handleClickStart.bind(this);
-    this.handleNextButtonClick = this.handleNextButtonClick.bind(this);
-    this.handleJoyrideCallback = this.handleJoyrideCallback.bind(this);
   }
-
-  static propTypes = {
-    joyride: PropTypes.shape({
-      autoStart: PropTypes.bool,
-      callback: PropTypes.func,
-      run: PropTypes.bool,
-    }),
-  };
 
   static defaultProps = {
     joyride: {
@@ -122,22 +112,22 @@ export default class Demo extends React.Component {
     });
   }
 
-  handleClickStart(e) {
+  handleClickStart = (e) => {
     e.preventDefault();
 
     this.setState({
       running: true,
       step: 0,
     });
-  }
+  };
 
-  handleNextButtonClick() {
+  handleNextButtonClick = () => {
     if (this.state.step === 1) {
       this.joyride.next();
     }
-  }
+  };
 
-  handleJoyrideCallback(result) {
+  handleJoyrideCallback = (result) => {
     const { joyride } = this.props;
 
     if (result.type === 'step:before') {
@@ -160,7 +150,7 @@ export default class Demo extends React.Component {
     if (typeof joyride.callback === 'function') {
       joyride.callback();
     }
-  }
+  };
 
   render() {
     const { joyride } = this.props;

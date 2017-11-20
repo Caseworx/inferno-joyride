@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import Inferno from 'inferno';
+import Component from 'inferno-component';
 import scroll from 'scroll';
 import nested from 'nested-property';
 import { getRootEl, getOffsetBoundingClientRect, logger, sanitizeSelector, getDocHeight } from './utils';
@@ -41,7 +41,7 @@ const DEFAULTS = {
 
 let hasTouch = false;
 
-class Joyride extends React.Component {
+class Joyride extends Component {
   constructor(props) {
     super(props);
 
@@ -51,32 +51,6 @@ class Joyride extends React.Component {
       tooltips: {}
     };
   }
-
-  static propTypes = {
-    allowClicksThruHole: PropTypes.bool,
-    autoStart: PropTypes.bool,
-    callback: PropTypes.func,
-    debug: PropTypes.bool,
-    disableOverlay: PropTypes.bool,
-    holePadding: PropTypes.number,
-    keyboardNavigation: PropTypes.bool,
-    locale: PropTypes.object,
-    offsetParentSelector: PropTypes.string,
-    resizeDebounce: PropTypes.bool,
-    resizeDebounceDelay: PropTypes.number,
-    run: PropTypes.bool,
-    scrollOffset: PropTypes.number,
-    scrollToFirstStep: PropTypes.bool,
-    scrollToSteps: PropTypes.bool,
-    showBackButton: PropTypes.bool,
-    showOverlay: PropTypes.bool,
-    showSkipButton: PropTypes.bool,
-    showStepsProgress: PropTypes.bool,
-    stepIndex: PropTypes.number,
-    steps: PropTypes.array,
-    tooltipOffset: PropTypes.number,
-    type: PropTypes.string
-  };
 
   static defaultProps = {
     allowClicksThruHole: false,
@@ -188,7 +162,6 @@ class Joyride extends React.Component {
         shouldStart = true;
       }
     }
-
     /* istanbul ignore else */
     if (runChanged) {
       // run prop was changed to off, so stop the joyride
@@ -426,21 +399,22 @@ class Joyride extends React.Component {
    * @param {number} [startIndex] - Optional step index to start joyride at
    */
   start(autorun, steps = this.props.steps, startIndex = this.state.index) {
-    const hasMountedTarget = Boolean(this.getStepTargetElement(steps[startIndex]));
-    const shouldRenderTooltip = (autorun === true) && hasMountedTarget;
+    this.forceUpdate(() => {
+      const hasMountedTarget = Boolean(this.getStepTargetElement(steps[startIndex]));
+      const shouldRenderTooltip = (autorun === true) && hasMountedTarget;
 
-    logger({
-      type: 'joyride:start',
-      msg: ['autorun:', autorun === true],
-      debug: this.props.debug,
-    });
-
-    this.setState({
-      action: 'start',
-      index: startIndex,
-      isRunning: Boolean(steps.length) && hasMountedTarget,
-      shouldRenderTooltip,
-      shouldRun: !steps.length,
+      logger({
+        type: 'joyride:start',
+        msg: ['autorun:', autorun === true],
+        debug: this.props.debug,
+      });
+      this.setState({
+        action: 'start',
+        index: startIndex,
+        isRunning: Boolean(steps.length) && hasMountedTarget,
+        shouldRenderTooltip,
+        shouldRun: !steps.length,
+      });
     });
   }
 
@@ -454,11 +428,12 @@ class Joyride extends React.Component {
       type: 'joyride:stop',
       debug: this.props.debug,
     });
-
-    this.setState({
-      isRunning: false,
-      shouldRenderTooltip: false
-    });
+    this.forceUpdate(() => {
+      this.setState({
+        isRunning: false,
+        shouldRenderTooltip: false
+      });
+    })
   }
 
   /**
@@ -883,7 +858,6 @@ class Joyride extends React.Component {
         });
         newIndex = steps.length + 1;
       }
-
       /* istanbul ignore else */
       if (tooltip.classList.contains('joyride-tooltip--standalone')) {
         this.setState({
@@ -897,7 +871,6 @@ class Joyride extends React.Component {
         const shouldDisplay = ['continuous', 'guided'].indexOf(type) > -1
           && ['close', 'skip'].indexOf(dataType) === -1
           && Boolean(steps[newIndex]);
-
         this.toggleTooltip({ show: shouldDisplay, index: newIndex, action: dataType });
       }
 
@@ -933,10 +906,10 @@ class Joyride extends React.Component {
    * @param {string} [options.action] - The action being undertaken.
    * @param {Array} [options.steps] - The array of step objects that is going to be rendered
    */
-  toggleTooltip({ show, index = this.state.index, action, steps = this.props.steps }) {
+  toggleTooltip = ({ show, index = this.state.index, action, steps = this.props.steps }) => {
+    this.forceUpdate(() => {
     const nextStep = steps[index];
     const hasMountedTarget = Boolean(this.getStepTargetElement(nextStep));
-
     this.setState({
       action,
       index,
@@ -948,7 +921,8 @@ class Joyride extends React.Component {
       xPos: -1000,
       yPos: -1000
     });
-  }
+    })
+  };
 
   /**
    * Position absolute elements next to its target
@@ -1212,8 +1186,7 @@ class Joyride extends React.Component {
           buttons.skip = locale.skip;
         }
       }
-
-      component = React.createElement(Tooltip, {
+      const componentProps = {
         allowClicksThruHole,
         animate: xPos > -1 && !shouldRedraw,
         buttons,
@@ -1231,16 +1204,18 @@ class Joyride extends React.Component {
         yPos,
         onClick: this.handleClickTooltip,
         onRender: this.handleRenderTooltip
-      });
+      };
+      component = <Tooltip {...componentProps} />
     }
     else {
-      component = React.createElement(Beacon, {
+      const compProps = {
         step,
         xPos,
         yPos,
         onTrigger: this.handleClickBeacon,
         eventType: step.type || 'click'
-      });
+      };
+      component = <Beacon {...compProps} />
     }
 
     return component;

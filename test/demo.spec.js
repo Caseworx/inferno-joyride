@@ -1,4 +1,5 @@
-import React from 'react';
+import Inferno from 'inferno';
+import Component from 'inferno-component';
 import { mount } from 'enzyme';
 
 import Demo from '../demo/src/App';

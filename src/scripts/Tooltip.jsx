@@ -1,46 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import Inferno from 'inferno';
+import Component from 'inferno-component';
 import { browser, getOffsetBoundingClientRect, sanitizeSelector } from './utils';
 
-export default class JoyrideTooltip extends React.Component {
+export default class JoyrideTooltip extends Component {
+
   constructor(props) {
     super(props);
-
     this.state = {};
   }
-
-  static propTypes = {
-    allowClicksThruHole: PropTypes.bool.isRequired,
-    animate: PropTypes.bool.isRequired,
-    buttons: PropTypes.object.isRequired,
-    disableOverlay: PropTypes.bool,
-    holePadding: PropTypes.number,
-    offsetParentSelector: PropTypes.string,
-    onClick: PropTypes.func.isRequired,
-    onRender: PropTypes.func.isRequired,
-    // position of tooltip with respect to target
-    position: PropTypes.oneOf([
-      'top', 'top-left', 'top-right',
-      'bottom', 'bottom-left', 'bottom-right',
-      'right', 'left',
-    ]).isRequired,
-    // sanitized selector string
-    selector: PropTypes.string.isRequired,
-    showOverlay: PropTypes.bool.isRequired,
-    standalone: PropTypes.bool,
-    step: PropTypes.object.isRequired,
-    // DOM element to target
-    target: PropTypes.object.isRequired,
-    type: PropTypes.string.isRequired,
-    xPos: PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.string
-    ]).isRequired,
-    yPos: PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.string
-    ]).isRequired
-  };
 
   static defaultProps = {
     buttons: {
