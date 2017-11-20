@@ -177,7 +177,7 @@ export default class Demo extends Component {
             <div className="container">
               <div className="hero__content">
                 <h1>
-                  <span>Create walkthroughs and guided tours for your ReactJS apps.</span>
+                  <span>Create walkthroughs and guided tours for your InfernoJS apps.</span>
                   <button className="hero__tooltip">?</button>
                 </h1>
                 <a href="#start" className="hero__start" onClick={this.handleClickStart}>Let's Go!</a>

@@ -1,12 +1,6 @@
 {
   "presets": [
-    ["env", {
-      "useBuiltIns": true,
-      "modules": false,
-      "targets": {
-        "browsers": ["last 2 versions", "safari >= 7"]
-      }
-    }],
+
     "stage-1"
   ],
   "plugins": [["inferno", {
