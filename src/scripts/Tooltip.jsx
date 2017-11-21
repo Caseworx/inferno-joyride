@@ -177,7 +177,7 @@ export default class JoyrideTooltip extends Component {
    * @param {Object} props                   Positioning properties: cssPosition, xPos, and yPos
    * @returns {Object}                       Calculated styles for arrow, buttons, header, main, footer, hole, and tooltip
    */
-  setStyles(stepStyles, opts, props) {
+  setStyles = (stepStyles, opts, props) => {
     const { holePadding, step, xPos, yPos } = props;
     const isFixed = step.isFixed === true;
 
